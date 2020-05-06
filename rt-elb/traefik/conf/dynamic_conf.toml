@@ -1,0 +1,35 @@
+# http routing section
+[http]
+  [http.routers]
+    # Define a connection between requests and services
+    [http.routers.vh-jobs]
+      entryPoints = ["web"]
+      rule = "PathPrefix(`/feedback`)"
+      service = "vh-jobs"
+
+    [http.routers.vh-candidates]
+      entryPoints = ["web"]
+      rule = "PathPrefix(`/api/v1/candidates`)"
+      service = "vh-candidates"
+
+  [http.services]
+    # Define how to reach an existing service on our infrastructure
+    [http.services.vh-jobs.loadBalancer]
+      # [http.services.vh-jobs.loadBalancer.healthCheck]
+      #   path = "/health"
+      #   interval = "5s"
+      #   timeout = "3s"
+
+      [[http.services.vh-jobs.loadBalancer.servers]]
+        url = "http://172.17.0.1:3000/"
+      [[http.services.vh-jobs.loadBalancer.servers]]
+        url = "http://172.17.0.1:3001/"
+
+    # [http.services.vh-candidates.loadBalancer]
+    #   [http.services.vh-candidates.loadBalancer.healthCheck]
+    #     path = "/health"
+    #     interval = "5s"
+    #     timeout = "3s"
+
+      [[http.services.vh-candidates.loadBalancer.servers]]
+        url = "http://172.17.0.1:10011/"

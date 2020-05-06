@@ -1,0 +1,124 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "0.0.4",
+    "title" : "VH Candidates service"
+  },
+  "host" : "localhost:10011",
+  "basePath" : "/api/v1",
+  "schemes" : [ "http", "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/candidates" : {
+      "get" : {
+        "description" : "List of candidates",
+        "operationId" : "listCandidates",
+        "parameters" : [ {
+          "name" : "candidateID",
+          "in" : "query",
+          "description" : "candidate ID",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "candidateName",
+          "in" : "query",
+          "description" : "Name of candidate",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Page to iterate, 1 is default",
+          "required" : false,
+          "type" : "number"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Candidate"
+              }
+            }
+          },
+          "default" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "x-swagger-router-controller" : "candidates"
+    },
+    "/candidates/types" : {
+      "get" : {
+        "description" : "List types of candidates",
+        "operationId" : "listCandidateTypes",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CandidateType"
+              }
+            }
+          },
+          "default" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      },
+      "x-swagger-router-controller" : "candidateTypes"
+    },
+    "/swagger" : {
+      "x-swagger-pipe" : "swagger_raw"
+    }
+  },
+  "definitions" : {
+    "Candidate" : {
+      "required" : [ "name", "photo", "skills" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "geo" : {
+          "type" : "string"
+        },
+        "photo" : {
+          "type" : "string"
+        },
+        "skills" : {
+          "type" : "array",
+          "description" : "Skills of candidate",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "CandidateType" : {
+      "required" : [ "candidateType" ],
+      "properties" : {
+        "candidateType" : {
+          "type" : "string"
+        }
+      }
+    },
+    "ErrorResponse" : {
+      "required" : [ "message" ],
+      "properties" : {
+        "message" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
